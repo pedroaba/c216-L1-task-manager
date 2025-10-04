@@ -1,0 +1,13 @@
+name: task-management-api
+
+services:
+  db:
+    image: postgres:17
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: task_management_api
+    volumes:
+      - ./docker/setup.sql:/docker-entrypoint-initdb.d/init.sql
