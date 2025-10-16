@@ -9,7 +9,7 @@ export const meRoute: FastifyPluginAsyncZod = async (server) => {
     {
       preHandler: [auth],
       schema: {
-        tags: ["user"],
+        tags: ["users"],
         summary: "Get current authenticated user profile",
         description:
           "Retrieves the profile information of the currently authenticated user. This endpoint requires a valid session cookie or session header for authentication.",

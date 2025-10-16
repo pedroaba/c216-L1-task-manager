@@ -67,7 +67,10 @@ export const signInRoute: FastifyPluginAsyncZod = async (server) => {
         data: { id: token, userId: user.id },
       })
 
-      return reply.status(StatusCode.OK).send({ token })
+      return reply
+        .setCookie("session", token)
+        .status(StatusCode.OK)
+        .send({ token })
     }
   )
 }
