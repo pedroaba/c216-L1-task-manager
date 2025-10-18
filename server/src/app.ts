@@ -32,7 +32,7 @@ export const app = fastify({
 app.register(fastifyCors, {
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "session"],
 })
 
 app.setSerializerCompiler(serializerCompiler)

@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma"
 
 export const registerUserRoute: FastifyPluginAsyncZod = async (server) => {
   await server.post(
-    "/users/register",
+    "/register",
     {
       schema: {
         tags: ["users"],

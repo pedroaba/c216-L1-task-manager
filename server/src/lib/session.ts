@@ -27,4 +27,13 @@ export const Session = {
       // do nothing
     }
   },
+
+  async invalidateSession(sessionId: string) {
+    await prisma.session.update({
+      where: { id: sessionId },
+      data: {
+        invalidatedAt: new Date(),
+      },
+    })
+  },
 }

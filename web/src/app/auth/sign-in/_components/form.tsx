@@ -40,7 +40,7 @@ export function SignInForm() {
       password,
     });
 
-    if (response.success) {
+    if (!response.success) {
       toast.error(response.message, { id: toastId });
       return;
     }

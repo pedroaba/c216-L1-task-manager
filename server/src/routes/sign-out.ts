@@ -26,7 +26,7 @@ export const signOutRoute: FastifyPluginAsyncZod = async (server) => {
         return reply.status(StatusCode.UNAUTHORIZED).send()
       }
 
-      Session.invalidateOlderSessions(session.userId)
+      await Session.invalidateOlderSessions(session.userId)
       return reply.status(StatusCode.OK).send()
     }
   )
