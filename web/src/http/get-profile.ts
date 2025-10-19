@@ -1,31 +1,30 @@
-import { destroyCookie } from "nookies";
-import { appConfig } from "@/constants/app-config";
 import { StatusCode } from "@/constants/status-code";
 import { apiClient } from "@/lib/axios/client";
-import { useAuthStore } from "@/store/auth";
+import type { User } from "@/types/user";
 import { httpMessageResponse } from "@/utils/http-message";
 
-export async function logout() {
+type GetProfileResponse = User;
+
+export async function getProfile() {
   try {
-    const response = await apiClient.post("/auth/sign-out");
+    const response = await apiClient.get<GetProfileResponse>("/users/me");
+
     if (response.status !== StatusCode.OK) {
       return httpMessageResponse({
         success: false,
-        message: "Failed to logout",
+        message: "Failed to get profile",
         other: response.data,
       });
     }
 
-    destroyCookie(null, appConfig.authCookieName);
-    useAuthStore.getState().reset();
-
     return httpMessageResponse({
-      message: "Logout successful",
-      other: {},
+      message: "Profile fetched successfully",
+      other: response.data,
     });
   } catch (error) {
     return httpMessageResponse({
-      message: "Failed to logout",
+      success: false,
+      message: "Failed to get profile",
       other: error,
     });
   }

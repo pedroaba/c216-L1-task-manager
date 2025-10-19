@@ -16,6 +16,7 @@ import { getSessionPlugin } from "./routes/plugin/get-session"
 import { registerUserRoute } from "./routes/register-user"
 import { signInRoute } from "./routes/sign-in"
 import { signOutRoute } from "./routes/sign-out"
+import { updateProfileRoute } from "./routes/update-profile"
 
 export const app = fastify({
   logger: {
@@ -90,6 +91,10 @@ app.register(getUserRoute, {
 })
 
 app.register(meRoute, {
+  prefix: "/users",
+})
+
+app.register(updateProfileRoute, {
   prefix: "/users",
 })
 

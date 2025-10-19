@@ -16,13 +16,21 @@ export const meRoute: FastifyPluginAsyncZod = async (server) => {
         security: [{ cookie: ["session"], session: ["session"] }],
         response: {
           200: z
-            .object({ id: z.string(), email: z.string(), name: z.string() })
+            .object({
+              id: z.string(),
+              email: z.string(),
+              name: z.string(),
+              createdAt: z.date(),
+              updatedAt: z.date(),
+            })
             .describe("User information")
             .meta({
               example: {
                 id: "cm123abc456def789",
                 email: "user@example.com",
                 name: "John Doe",
+                createdAt: new Date(),
+                updatedAt: new Date(),
               },
             }),
           401: z.void().describe("Unauthorized - user not logged in"),
@@ -39,6 +47,8 @@ export const meRoute: FastifyPluginAsyncZod = async (server) => {
         id: user.id,
         email: user.email,
         name: user.name,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       }
     }
   )

@@ -7,6 +7,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { appConfig } from "@/constants/app-config";
+import { AuthWrapper } from "@/wrappers/auth";
+import { SystemUserModal } from "./_components/modal";
 
 export default async function DashboardLayout({
   children,
@@ -21,17 +23,20 @@ export default async function DashboardLayout({
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="flex md:hidden" />
-          <div className="flex flex-1 items-center gap-2">
-            {/* Breadcrumb ou título da página pode ir aqui */}
-          </div>
-        </header>
-        <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
-      </SidebarInset>
-    </SidebarProvider>
+    <AuthWrapper>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="flex md:hidden" />
+            <div className="flex flex-1 items-center gap-2">
+              {/* Breadcrumb ou título da página pode ir aqui */}
+            </div>
+          </header>
+          <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
+        </SidebarInset>
+        <SystemUserModal />
+      </SidebarProvider>
+    </AuthWrapper>
   );
 }

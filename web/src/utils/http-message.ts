@@ -1,7 +1,7 @@
 type HttpMessageResponse<TOther = unknown> = {
   success: boolean;
   message: string;
-  other: TOther;
+  other?: TOther;
 };
 
 type HttpMessageResponseParams<TOther = unknown> = {

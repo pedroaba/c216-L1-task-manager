@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/sidebar";
 import { appConfig } from "@/constants/app-config";
 import { logout } from "@/http/logout";
+import { useAuthStore } from "@/store/auth";
+import { useSystemUserModal } from "@/store/use-user-modal";
 
 const mainNavItems = [
   {
@@ -63,6 +65,8 @@ const mainNavItems = [
 
 export function AppSidebar() {
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const { openModal } = useSystemUserModal();
 
   async function handleLogout() {
     const response = await logout();
@@ -105,11 +109,11 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center" className="w-56">
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => openModal("profile")}>
                   <UserIcon className="size-4" />
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => openModal("settings")}>
                   <SettingsIcon className="size-4" />
                   Configurações
                 </DropdownMenuItem>
@@ -212,20 +216,20 @@ export function AppSidebar() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col gap-0.5 text-left text-sm leading-tight">
-                    <span className="font-semibold">Usuário</span>
+                    <span className="font-semibold">{user?.name}</span>
                     <span className="text-muted-foreground text-xs">
-                      usuario@email.com
+                      {user?.email}
                     </span>
                   </div>
                   <ChevronRight className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center" className="w-56" side="top">
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => openModal("profile")}>
                   <UserIcon className="mr-2 size-4" />
                   Meu Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => openModal("settings")}>
                   <SettingsIcon className="mr-2 size-4" />
                   Configurações
                 </DropdownMenuItem>
