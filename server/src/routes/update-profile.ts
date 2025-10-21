@@ -1,7 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
 import { StatusCode } from "@/constants/status-code"
-import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { auth } from "./hooks/auth"
 
@@ -44,7 +43,6 @@ export const updateProfileRoute: FastifyPluginAsyncZod = async (server) => {
       const { id } = request.params
       const loggedUser = await request.getLoggedUser(request)
 
-      console.log({ loggedUser }, "Logged user")
       if (!loggedUser) {
         return reply.status(StatusCode.UNAUTHORIZED).send()
       }

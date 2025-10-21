@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="flex min-h-[calc(100vh-6rem)] items-center justify-center px-4">
+    <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center px-4">
       <div className="mx-auto w-full max-w-xl">
         <div className="space-y-8 text-center">
           {/* Icon */}

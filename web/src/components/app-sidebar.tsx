@@ -38,7 +38,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -48,6 +47,7 @@ import { appConfig } from "@/constants/app-config";
 import { logout } from "@/http/logout";
 import { useAuthStore } from "@/store/auth";
 import { useSystemUserModal } from "@/store/use-user-modal";
+import { AppSidebarHeader } from "./app-sidebar-header";
 
 const mainNavItems = [
   {
@@ -87,46 +87,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  className="h-12 hover:bg-sidebar-accent"
-                  size="lg"
-                >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                    <span className="font-semibold text-sm">TM</span>
-                  </div>
-                  <div className="flex flex-col gap-0.5 text-left text-sm leading-tight">
-                    <span className="font-semibold">Task Manager</span>
-                    <span className="text-muted-foreground text-xs">
-                      Workspace
-                    </span>
-                  </div>
-                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/menu-item:rotate-90" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-56">
-                <DropdownMenuItem onClick={() => openModal("profile")}>
-                  <UserIcon className="size-4" />
-                  Perfil
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => openModal("settings")}>
-                  <SettingsIcon className="size-4" />
-                  Configurações
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusIcon className="size-4" />
-                  Novo Workspace
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+      <AppSidebarHeader />
 
       <SidebarContent className="gap-0">
         {/* Main Navigation */}
@@ -216,10 +177,12 @@ export function AppSidebar() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col gap-0.5 text-left text-sm leading-tight">
-                    <span className="font-semibold">{user?.name}</span>
-                    <span className="text-muted-foreground text-xs">
+                    <p className="max-w-[150px] truncate font-semibold">
+                      {user?.name}
+                    </p>
+                    <p className="max-w-[150px] truncate text-muted-foreground text-xs">
                       {user?.email}
-                    </span>
+                    </p>
                   </div>
                   <ChevronRight className="ml-auto" />
                 </SidebarMenuButton>

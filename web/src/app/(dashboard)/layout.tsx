@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { AppBreadcrumb } from "@/components/app-breadcrumb";
 import { AppSidebar } from "@/components/app-sidebar";
+import { AvatarButton } from "@/components/avatar-button";
 import {
   SidebarInset,
   SidebarProvider,
@@ -27,10 +29,11 @@ export default async function DashboardLayout({
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+          <header className="flex h-[calc(4rem+10px)] w-full shrink-0 items-center justify-between gap-2 border-b px-4">
             <SidebarTrigger className="flex md:hidden" />
-            <div className="flex flex-1 items-center gap-2">
-              {/* Breadcrumb ou título da página pode ir aqui */}
+            <div className="flex items-center justify-between gap-2 sm:flex-1">
+              <AppBreadcrumb />
+              <AvatarButton />
             </div>
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
