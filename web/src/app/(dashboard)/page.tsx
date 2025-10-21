@@ -1,52 +1,41 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { FolderOpen, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <Card>
-        <CardHeader>
-          <CardTitle>Bem-vindo ao Task Manager</CardTitle>
-          <CardDescription>
-            Gerencie suas tarefas e projetos de forma eficiente
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm">
-            Use a sidebar ao lado para navegar entre diferentes seções do
-            aplicativo.
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Tarefas Pendentes</CardTitle>
-          <CardDescription>Você tem 5 tarefas pendentes</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex h-20 items-center justify-center font-bold text-4xl text-muted-foreground">
-            5
+    <div className="flex min-h-[calc(100vh-6rem)] items-center justify-center px-4">
+      <div className="mx-auto w-full max-w-xl">
+        <div className="space-y-8 text-center">
+          {/* Icon */}
+          <div className="mx-auto flex size-20 items-center justify-center rounded-2xl bg-muted/50 transition-colors duration-300 hover:bg-muted">
+            <FolderOpen
+              className="size-10 text-muted-foreground"
+              strokeWidth={1.5}
+            />
           </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Projetos Ativos</CardTitle>
-          <CardDescription>3 projetos em andamento</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex h-20 items-center justify-center font-bold text-4xl text-muted-foreground">
-            3
+          <div className="space-y-3">
+            <h1 className="font-semibold text-2xl tracking-tight">
+              Nenhum workspace selecionado
+            </h1>
+            <p className="mx-auto max-w-sm text-balance text-muted-foreground text-sm leading-relaxed">
+              Selecione um workspace da barra lateral ou crie um novo para
+              começar
+            </p>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Action */}
+          <div className="flex flex-col items-center gap-3 pt-2">
+            <Button className="min-w-[200px] shadow-sm" size="lg">
+              <Plus className="size-4" />
+              Criar workspace
+            </Button>
+            <p className="text-muted-foreground text-xs">
+              ou escolha um workspace existente
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
