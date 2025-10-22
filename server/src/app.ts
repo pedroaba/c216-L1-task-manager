@@ -9,8 +9,12 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod"
 import { env } from "./env"
+import { createWorkspaceRoute } from "./routes/create-workspace"
+import { deleteWorkspaceRoute } from "./routes/delete-workspace"
 import { getUserRoute } from "./routes/get-user"
+import { getWorkspaceByIdOrSlugRoute } from "./routes/get-workspace-by-id-or-slug"
 import { healthRoute } from "./routes/health"
+import { listWorkspaceRoute } from "./routes/list-workspace"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
 import { registerUserRoute } from "./routes/register-user"
@@ -105,4 +109,21 @@ app.register(signInRoute, {
 
 app.register(signOutRoute, {
   prefix: "/auth",
+})
+
+// workspaces
+app.register(createWorkspaceRoute, {
+  prefix: "/workspace",
+})
+
+app.register(getWorkspaceByIdOrSlugRoute, {
+  prefix: "/workspace",
+})
+
+app.register(deleteWorkspaceRoute, {
+  prefix: "/workspace",
+})
+
+app.register(listWorkspaceRoute, {
+  prefix: "/workspace",
 })
