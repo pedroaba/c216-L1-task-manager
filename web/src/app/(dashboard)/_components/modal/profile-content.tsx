@@ -49,21 +49,21 @@ export function ProfileContent({
 
   function formatDate(dateString: string): string {
     if (!dateString) {
-      return "Data não disponível";
+      return "Date not available";
     }
 
     try {
       const date = new Date(dateString);
       if (Number.isNaN(date.getTime())) {
-        return "Data não disponível";
+        return "Date not available";
       }
-      return date.toLocaleDateString("pt-BR", {
+      return date.toLocaleDateString("en-US", {
         day: "numeric",
         month: "long",
         year: "numeric",
       });
     } catch {
-      return "Data não disponível";
+      return "Date not available";
     }
   }
 

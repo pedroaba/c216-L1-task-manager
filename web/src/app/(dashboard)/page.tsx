@@ -1,4 +1,5 @@
 import { FolderOpen, Plus } from "lucide-react";
+import { CreateWorkspaceModal } from "@/components/create-workspace-modal";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -16,22 +17,26 @@ export default function Home() {
 
           <div className="space-y-3">
             <h1 className="font-semibold text-2xl tracking-tight">
-              Nenhum workspace selecionado
+              No workspace selected
             </h1>
             <p className="mx-auto max-w-sm text-balance text-muted-foreground text-sm leading-relaxed">
-              Selecione um workspace da barra lateral ou crie um novo para
-              começar
+              Select a workspace from the sidebar or create a new one to get
+              started
             </p>
           </div>
 
           {/* Action */}
           <div className="flex flex-col items-center gap-3 pt-2">
-            <Button className="min-w-[200px] shadow-sm" size="lg">
-              <Plus className="size-4" />
-              Criar workspace
-            </Button>
+            <CreateWorkspaceModal
+              trigger={
+                <Button className="min-w-[200px] shadow-sm" size="lg">
+                  <Plus className="size-4" />
+                  Create workspace
+                </Button>
+              }
+            />
             <p className="text-muted-foreground text-xs">
-              ou escolha um workspace existente
+              or choose an existing workspace
             </p>
           </div>
         </div>

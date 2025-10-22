@@ -1,28 +1,28 @@
-# Sidebar no Estilo Notion
+# Notion-Style Sidebar
 
-## 📋 O que foi implementado
+## 📋 What was implemented
 
-Uma sidebar moderna e responsiva inspirada no Notion, com as seguintes características:
+A modern and responsive sidebar inspired by Notion, with the following features:
 
-### ✨ Funcionalidades
+### ✨ Features
 
-- **Collapsible**: Pode ser expandida ou colapsada para modo ícone
-- **Header com Workspace**: Seção superior com dropdown para trocar de workspace
-- **Navegação Principal**: Links rápidos para busca, início, inbox, configurações
-- **Menu Hierárquico**: Suporte para submenus e itens expansíveis (Projetos, Tarefas)
-- **Footer com Perfil**: Informações do usuário com dropdown de opções
-- **Badges**: Notificações visuais (ex: 3 itens no Inbox)
-- **Tooltips**: Dicas visuais quando a sidebar está colapsada
-- **Atalho de Teclado**: `Cmd/Ctrl + B` para alternar a sidebar
-- **Totalmente Responsiva**: No mobile, a sidebar se transforma em um drawer/sheet
+- **Collapsible**: Can be expanded or collapsed to icon mode
+- **Header with Workspace**: Top section with dropdown to switch workspaces
+- **Main Navigation**: Quick links for search, home, inbox, settings
+- **Hierarchical Menu**: Support for submenus and expandable items (Projects, Tasks)
+- **Footer with Profile**: User information with dropdown options
+- **Badges**: Visual notifications (e.g., 3 items in Inbox)
+- **Tooltips**: Visual hints when the sidebar is collapsed
+- **Keyboard Shortcut**: `Cmd/Ctrl + B` to toggle the sidebar
+- **Fully Responsive**: On mobile, the sidebar transforms into a drawer/sheet
 
-## 🎨 Estrutura de Arquivos
+## 🎨 File Structure
 
 ```
 src/
 ├── components/
-│   ├── app-sidebar.tsx          # Componente principal da sidebar
-│   └── ui/                       # Componentes shadcn/ui (já existentes)
+│   ├── app-sidebar.tsx          # Main sidebar component
+│   └── ui/                       # shadcn/ui components (already existing)
 │       ├── sidebar.tsx
 │       ├── dropdown-menu.tsx
 │       ├── avatar.tsx
@@ -30,22 +30,22 @@ src/
 │       └── ...
 └── app/
     └── (dashboard)/
-        └── layout.tsx            # Layout atualizado com SidebarProvider
+        └── layout.tsx            # Layout updated with SidebarProvider
 ```
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-A sidebar já está integrada no layout do dashboard e funcionará automaticamente em todas as páginas dentro do grupo `(dashboard)`.
+The sidebar is already integrated into the dashboard layout and will work automatically on all pages within the `(dashboard)` group.
 
-### Personalizando os Itens de Menu
+### Customizing Menu Items
 
-Edite o arquivo `src/components/app-sidebar.tsx`:
+Edit the `src/components/app-sidebar.tsx` file:
 
 ```typescript
-// Navegação principal
+// Main navigation
 const mainNavItems = [
   {
-    title: "Buscar",
+    title: "Search",
     icon: SearchIcon,
     url: "/search",
   },
@@ -53,91 +53,91 @@ const mainNavItems = [
     title: "Inbox",
     icon: InboxIcon,
     url: "/inbox",
-    badge: "3", // Adicione badges opcionais
+    badge: "3", // Add optional badges
   },
-  // Adicione mais itens aqui
+  // Add more items here
 ];
 
-// Workspace com submenus
+// Workspace with submenus
 const workspaceItems = [
   {
-    title: "Projetos",
+    title: "Projects",
     icon: InboxIcon,
     url: "/projects",
-    isOpen: true, // Define se inicia expandido
+    isOpen: true, // Defines if it starts expanded
     items: [
-      { title: "Projeto A", url: "/projects/a" },
-      { title: "Projeto B", url: "/projects/b" },
+      { title: "Project A", url: "/projects/a" },
+      { title: "Project B", url: "/projects/b" },
     ],
   },
-  // Adicione mais seções aqui
+  // Add more sections here
 ];
 ```
 
-### Adicionando Novos Ícones
+### Adding New Icons
 
-Importe de `lucide-react`:
+Import from `lucide-react`:
 
 ```typescript
 import { CalendarIcon, FileIcon, UsersIcon } from "lucide-react";
 ```
 
-### Personalizando Informações do Usuário
+### Customizing User Information
 
-No footer da sidebar (`app-sidebar.tsx`), atualize:
+In the sidebar footer (`app-sidebar.tsx`), update:
 
 ```typescript
 <Avatar className="size-8">
-  <AvatarImage alt="User" src="/seu-avatar.png" />
+  <AvatarImage alt="User" src="/your-avatar.png" />
   <AvatarFallback>UN</AvatarFallback>
 </Avatar>
 <div>
-  <span className="font-semibold">Seu Nome</span>
-  <span className="text-xs">seu@email.com</span>
+  <span className="font-semibold">Your Name</span>
+  <span className="text-xs">your@email.com</span>
 </div>
 ```
 
-### Personalizando o Workspace
+### Customizing the Workspace
 
-No header da sidebar:
+In the sidebar header:
 
 ```typescript
 <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-  <span className="font-semibold text-sm">SL</span> {/* Suas iniciais */}
+  <span className="font-semibold text-sm">YI</span> {/* Your initials */}
 </div>
 <div>
-  <span className="font-semibold">Seu Workspace</span>
+  <span className="font-semibold">Your Workspace</span>
   <span className="text-xs">Workspace</span>
 </div>
 ```
 
-## 🎯 Comportamentos
+## 🎯 Behaviors
 
 ### Desktop
 
-- **Estado Expandido**: Mostra todos os textos e ícones
-- **Estado Colapsado**: Mostra apenas ícones com tooltips
-- **Toggle**: Clique no botão do header ou pressione `Cmd/Ctrl + B`
+- **Expanded State**: Shows all texts and icons
+- **Collapsed State**: Shows only icons with tooltips
+- **Toggle**: Click the header button or press `Cmd/Ctrl + B`
 
 ### Mobile
 
-- A sidebar fica oculta por padrão
-- Abre como um drawer lateral ao clicar no botão de menu
-- Fecha automaticamente ao navegar
+- The sidebar is hidden by default
+- Opens as a side drawer when clicking the menu button
+- Closes automatically when navigating
 
-## 🎨 Customização de Estilo
+## 🎨 Style Customization
 
-A sidebar usa as cores do tema definidas em `app/globals.css`:
+The sidebar uses theme colors defined in `app/globals.css`:
 
 ```css
---sidebar: /* Cor de fundo */
---sidebar-foreground: /* Cor do texto */
---sidebar-accent: /* Cor de hover/active */
---sidebar-accent-foreground: /* Texto em accent */
---sidebar-border: /* Cor das bordas */
+--sidebar: /* Background color */
+--sidebar-foreground: /* Text color */
+--sidebar-accent: /* Hover/active color */
+--sidebar-accent-foreground: /* Text on accent */
+--sidebar-border: /* Border color */
 ```
 
-### Variantes Disponíveis
+### Available Variants
 
 ```typescript
 <Sidebar
@@ -146,49 +146,49 @@ A sidebar usa as cores do tema definidas em `app/globals.css`:
 />
 ```
 
-## 📱 Responsividade
+## 📱 Responsiveness
 
-- **Desktop (≥768px)**: Sidebar fixa lateral
-- **Mobile (<768px)**: Drawer deslizante
+- **Desktop (≥768px)**: Fixed side sidebar
+- **Mobile (<768px)**: Sliding drawer
 
-## 🔧 Componentes Utilizados
+## 🔧 Components Used
 
-- `Sidebar` - Container principal
-- `SidebarProvider` - Contexto e estado
-- `SidebarTrigger` - Botão de toggle
-- `SidebarInset` - Área de conteúdo principal
-- `SidebarMenu` - Lista de navegação
-- `SidebarMenuButton` - Botões de menu
-- `Collapsible` - Submenus expansíveis
-- `DropdownMenu` - Menus de contexto
-- `Avatar` - Foto do usuário
+- `Sidebar` - Main container
+- `SidebarProvider` - Context and state
+- `SidebarTrigger` - Toggle button
+- `SidebarInset` - Main content area
+- `SidebarMenu` - Navigation list
+- `SidebarMenuButton` - Menu buttons
+- `Collapsible` - Expandable submenus
+- `DropdownMenu` - Context menus
+- `Avatar` - User photo
 
-## 💡 Dicas
+## 💡 Tips
 
-1. **Adicione tooltips**: Use a prop `tooltip` em `SidebarMenuButton` para melhor UX
-2. **Use badges**: Mostre notificações com contadores
-3. **Organize por grupos**: Use `SidebarGroup` para separar seções
-4. **Suporte a deep links**: Os links funcionam com Next.js Link
-5. **Adicione loading states**: Use `SidebarMenuSkeleton` durante carregamento
+1. **Add tooltips**: Use the `tooltip` prop on `SidebarMenuButton` for better UX
+2. **Use badges**: Show notifications with counters
+3. **Organize by groups**: Use `SidebarGroup` to separate sections
+4. **Deep links support**: Links work with Next.js Link
+5. **Add loading states**: Use `SidebarMenuSkeleton` during loading
 
 ## 🐛 Troubleshooting
 
-### A sidebar não aparece
+### Sidebar doesn't appear
 
-- Verifique se `SidebarProvider` envolve seu layout
-- Confirme que está dentro do grupo `(dashboard)`
+- Check if `SidebarProvider` wraps your layout
+- Confirm you're inside the `(dashboard)` group
 
-### Ícones não aparecem
+### Icons don't appear
 
-- Verifique se importou de `lucide-react`
-- Confirme que o componente está dentro de `SidebarMenuButton`
+- Check if you imported from `lucide-react`
+- Confirm the component is inside `SidebarMenuButton`
 
-### Estilos não aplicam
+### Styles don't apply
 
-- Execute `pnpm run dev` novamente
-- Limpe o cache do Next.js: `rm -rf .next`
+- Run `pnpm run dev` again
+- Clear Next.js cache: `rm -rf .next`
 
-## 📚 Recursos
+## 📚 Resources
 
 - [Shadcn/ui Sidebar](https://ui.shadcn.com/docs/components/sidebar)
 - [Lucide Icons](https://lucide.dev/icons/)

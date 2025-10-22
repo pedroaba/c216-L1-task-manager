@@ -60,7 +60,7 @@ export const signInRoute: FastifyPluginAsyncZod = async (server) => {
         return reply.status(StatusCode.UNAUTHORIZED).send()
       }
 
-      Session.invalidateOlderSessions(user.id)
+      await Session.invalidateOlderSessions(user.id)
 
       const token = Session.token()
       await prisma.session.create({

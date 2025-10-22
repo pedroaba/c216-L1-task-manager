@@ -60,11 +60,11 @@ export function AvatarButton() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem onClick={() => openModal("profile")}>
           <UserIcon className="mr-2 size-4" />
-          Meu Perfil
+          My Profile
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openModal("settings")}>
           <SettingsIcon className="mr-2 size-4" />
-          Configurações
+          Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
@@ -75,16 +75,16 @@ export function AvatarButton() {
           <DropdownMenuSubContent sideOffset={10}>
             <DropdownMenuItem>
               <PlusIcon className="size-4" />
-              Criar Workspace
+              Create Workspace
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Trash2 className="size-4" />
-              Acessar Lixeira
+              Access Trash
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Sair</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>Sign Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -51,7 +51,7 @@ import { AppSidebarHeader } from "./app-sidebar-header";
 
 const mainNavItems = [
   {
-    title: "Início",
+    title: "Home",
     icon: HomeIcon,
     url: "/",
   },
@@ -129,7 +129,7 @@ export function AppSidebar() {
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton className="group">
                       <Container />
-                      <span>Projetos</span>
+                      <span>Projects</span>
 
                       <ChevronRight className="ml-auto size-3.5 transition-transform group-data-[state=open]:rotate-90" />
                       <span className="sr-only">Toggle</span>
@@ -190,11 +190,11 @@ export function AppSidebar() {
               <DropdownMenuContent align="center" className="w-56" side="top">
                 <DropdownMenuItem onClick={() => openModal("profile")}>
                   <UserIcon className="mr-2 size-4" />
-                  Meu Perfil
+                  My Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => openModal("settings")}>
                   <SettingsIcon className="mr-2 size-4" />
-                  Configurações
+                  Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
@@ -205,16 +205,18 @@ export function AppSidebar() {
                   <DropdownMenuSubContent sideOffset={10}>
                     <DropdownMenuItem>
                       <PlusIcon className="size-4" />
-                      Criar Workspace
+                      Create Workspace
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Trash2 className="size-4" />
-                      Acessar Lixeira
+                      Access Trash
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>Sair</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  Sign Out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
