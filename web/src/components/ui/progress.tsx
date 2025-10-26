@@ -10,8 +10,11 @@ export const PROGRESS_MAX_VALUE = 100;
 function Progress({
   className,
   value,
+  indicatorClassName,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & {
+  indicatorClassName?: string;
+}) {
   return (
     <ProgressPrimitive.Root
       className={cn(
@@ -22,7 +25,10 @@ function Progress({
       {...props}
     >
       <ProgressPrimitive.Indicator
-        className="h-full w-full flex-1 bg-primary transition-all"
+        className={cn(
+          "h-full w-full flex-1 bg-primary transition-all",
+          indicatorClassName
+        )}
         data-slot="progress-indicator"
         style={{
           transform: `translateX(-${PROGRESS_MAX_VALUE - (value || 0)}%)`,

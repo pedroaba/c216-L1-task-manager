@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ui/theme";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Taskerra - Task Management Platform",
@@ -66,7 +67,7 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          {children}
+          <Providers>{children}</Providers>
         </ThemeProvider>
         <Toaster />
       </body>

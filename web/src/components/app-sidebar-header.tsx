@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ChevronRight, PlusIcon } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -16,44 +17,32 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useGetWorkspace } from "@/http/gen/endpoints/workspace/workspace.gen";
+import type { GetWorkspace200 } from "@/http/gen/models";
 import { cn } from "@/lib/utils";
+import { getInitials } from "@/utils/get-initials";
 import { CreateWorkspaceModal } from "./create-workspace-modal";
 
-// Mock data - replace with actual data from backend
-const mockWorkspaces = [
-  {
-    id: "1",
-    name: "Personal Workspace",
-    description: "Personal projects",
-    icon: "WP",
-    color: "bg-blue-500",
-  },
-  {
-    id: "2",
-    name: "XYZ Company",
-    description: "Company projects",
-    icon: "EX",
-    color: "bg-purple-500",
-  },
-  {
-    id: "3",
-    name: "Freelance",
-    description: "Freelance projects",
-    icon: "FR",
-    color: "bg-green-500",
-  },
-];
-
 export function AppSidebarHeader() {
-  const [selectedWorkspace, setSelectedWorkspace] = useState<string | null>(
-    null
-  );
+  const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
+  const router = useRouter();
 
   const [createWorkspaceOpen, setCreateWorkspaceOpen] = useState(false);
+  const { data: workspaceResponse, isLoading } = useGetWorkspace();
+  const [, workspaces] =
+    workspaceResponse ??
+    ([
+      null,
+      { workspaces: [], total: 0, page: 0, limit: 0, hasNextPage: false },
+    ] as [null, GetWorkspace200]);
 
-  const currentWorkspace = mockWorkspaces.find(
-    (ws) => ws.id === selectedWorkspace
+  const currentWorkspace = workspaces?.workspaces.find(
+    (workspace) => workspace.slug === workspaceSlug
   );
+
+  function handleSelectWorkspace(workspaceSlug: string) {
+    router.replace(`/${workspaceSlug}`);
+  }
 
   return (
     <>
@@ -71,16 +60,16 @@ export function AppSidebarHeader() {
                   )}
                   // size="lg"
                 >
-                  {currentWorkspace ? (
+                  {currentWorkspace && !isLoading ? (
                     <>
                       <div
                         className={cn(
-                          "flex aspect-square size-9 items-center justify-center rounded-md text-white shadow-none transition-transform duration-200 group-hover/trigger:scale-105",
-                          currentWorkspace.color
+                          "flex aspect-square size-9 items-center justify-center rounded-md shadow-none transition-transform duration-200 group-hover/trigger:scale-105",
+                          "bg-primary text-primary-foreground dark:bg-zinc-950/60 dark:text-white"
                         )}
                       >
                         <span className="font-semibold text-sm">
-                          {currentWorkspace.icon}
+                          {getInitials(currentWorkspace.name)}
                         </span>
                       </div>
                       <div className="flex flex-1 flex-col text-left leading-normal">
@@ -119,19 +108,19 @@ export function AppSidebarHeader() {
                 <DropdownMenuLabel className="text-muted-foreground text-xs">
                   Your Workspaces
                 </DropdownMenuLabel>
-                {mockWorkspaces.map((workspace) => (
+                {workspaces?.workspaces.map((workspace) => (
                   <DropdownMenuItem
                     className="gap-2 py-2"
                     key={workspace.id}
-                    onClick={() => setSelectedWorkspace(workspace.id)}
+                    onClick={() => handleSelectWorkspace(workspace.slug)}
                   >
                     <div
                       className={cn(
                         "flex size-8 shrink-0 items-center justify-center rounded-md text-white text-xs",
-                        workspace.color
+                        "bg-primary text-primary-foreground dark:bg-zinc-950/60 dark:text-white"
                       )}
                     >
-                      {workspace.icon}
+                      {getInitials(workspace.name)}
                     </div>
                     <div className="flex flex-1 flex-col gap-0.5">
                       <span className="font-medium text-sm">
@@ -141,7 +130,7 @@ export function AppSidebarHeader() {
                         {workspace.description}
                       </span>
                     </div>
-                    {selectedWorkspace === workspace.id && (
+                    {workspaceSlug === workspace.slug && (
                       <Check className="size-4 text-primary" />
                     )}
                   </DropdownMenuItem>
