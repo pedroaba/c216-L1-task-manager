@@ -4,8 +4,6 @@ import { Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { UpgradeBanner } from "@/components/upgrade-banner";
 import { cn } from "@/lib/utils";
 import { ProjectUsageGraph } from "./project-usage-graph";
 import { TotalProjectAlert } from "./total-project-alert";
@@ -163,13 +161,13 @@ export function UsageOverview() {
           </div>
         </div>
 
-        <div className="mb-4">
+        <div className="">
           <ProjectUsageGraph />
         </div>
 
-        <Separator className="mb-4" />
+        {/* <Separator className="mb-4" /> */}
 
-        <UpgradeBanner />
+        {/* <UpgradeBanner /> */}
       </CardContent>
     </Card>
   );

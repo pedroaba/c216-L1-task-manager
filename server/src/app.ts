@@ -9,11 +9,15 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod"
 import { env } from "./env"
+import { createProjectRoute } from "./routes/create-project"
 import { createWorkspaceRoute } from "./routes/create-workspace"
+import { deleteProjectRoute } from "./routes/delete-project"
 import { deleteWorkspaceRoute } from "./routes/delete-workspace"
+import { getProjectByIdOrSlugRoute } from "./routes/get-project-by-id-or-slug"
 import { getUserRoute } from "./routes/get-user"
 import { getWorkspaceByIdOrSlugRoute } from "./routes/get-workspace-by-id-or-slug"
 import { healthRoute } from "./routes/health"
+import { listProjectRoute } from "./routes/list-project"
 import { listWorkspaceRoute } from "./routes/list-workspace"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
@@ -23,6 +27,7 @@ import { sendForgotPasswordEmail } from "./routes/send-forgot-password-email"
 import { signInRoute } from "./routes/sign-in"
 import { signOutRoute } from "./routes/sign-out"
 import { updateProfileRoute } from "./routes/update-profile"
+import { updateProjectRoute } from "./routes/update-project"
 
 export const app = fastify({
   logger: {
@@ -136,4 +141,25 @@ app.register(deleteWorkspaceRoute, {
 
 app.register(listWorkspaceRoute, {
   prefix: "/workspace",
+})
+
+// projects
+app.register(createProjectRoute, {
+  prefix: "/project",
+})
+
+app.register(getProjectByIdOrSlugRoute, {
+  prefix: "/project",
+})
+
+app.register(updateProjectRoute, {
+  prefix: "/project",
+})
+
+app.register(deleteProjectRoute, {
+  prefix: "/project",
+})
+
+app.register(listProjectRoute, {
+  prefix: "/project",
 })
