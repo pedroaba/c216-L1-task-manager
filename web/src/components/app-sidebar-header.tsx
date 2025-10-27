@@ -41,7 +41,7 @@ export function AppSidebarHeader() {
   );
 
   function handleSelectWorkspace(workspaceSlug: string) {
-    router.replace(`/${workspaceSlug}`);
+    router.replace(`/workspace/${workspaceSlug}`);
   }
 
   return (

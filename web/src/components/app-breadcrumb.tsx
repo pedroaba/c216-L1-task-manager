@@ -20,7 +20,9 @@ function formatSegment(segment: string): string {
 
 export function AppBreadcrumb() {
   const pathname = usePathname();
-  const segments = pathname.split("/").filter((segment) => segment !== "");
+  const segments = pathname
+    .split("/")
+    .filter((segment) => segment !== "" && segment !== "workspace");
 
   // If we're on the home page, show just "Home"
   if (segments.length === 0) {
@@ -46,7 +48,6 @@ export function AppBreadcrumb() {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
 
-        {/* Dynamic segments */}
         {segments.map((segment, index) => {
           const isLast = index === segments.length - 1;
           const href = `/${segments.slice(0, index + 1).join("/")}`;

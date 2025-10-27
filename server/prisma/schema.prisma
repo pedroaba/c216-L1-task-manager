@@ -23,9 +23,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions   Session[]
-  workspaces Workspace[]
-  members    Member[]
+  sessions       Session[]
+  workspaces     Workspace[]
+  members        Member[]
+  recoveryTokens RecoveryToken[]
 
   @@map("users")
 }
@@ -74,4 +75,20 @@ model Member {
   updatedAt DateTime @updatedAt
 
   @@map("members")
+}
+
+model RecoveryToken {
+  id    String @id @default(nanoid())
+  token String @unique
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  expiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("recovery_tokens")
 }

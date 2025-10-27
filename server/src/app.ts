@@ -18,6 +18,8 @@ import { listWorkspaceRoute } from "./routes/list-workspace"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
 import { registerUserRoute } from "./routes/register-user"
+import { resetPassword } from "./routes/reset-password"
+import { sendForgotPasswordEmail } from "./routes/send-forgot-password-email"
 import { signInRoute } from "./routes/sign-in"
 import { signOutRoute } from "./routes/sign-out"
 import { updateProfileRoute } from "./routes/update-profile"
@@ -108,6 +110,14 @@ app.register(signInRoute, {
 })
 
 app.register(signOutRoute, {
+  prefix: "/auth",
+})
+
+app.register(sendForgotPasswordEmail, {
+  prefix: "/auth",
+})
+
+app.register(resetPassword, {
   prefix: "/auth",
 })
 
