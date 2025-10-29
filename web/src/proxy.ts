@@ -4,7 +4,7 @@ import { appConfig } from "@/constants/app-config";
 
 const unprotectedRoutePrefix = "/auth";
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const nextCookies = await cookies();
   if (request.nextUrl.pathname.startsWith(unprotectedRoutePrefix)) {
     return NextResponse.next();
