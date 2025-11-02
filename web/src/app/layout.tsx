@@ -60,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html className="dark" lang="en" suppressHydrationWarning>
-      <body className="flex min-h-screen flex-col bg-background">
+      <body className="flex min-h-screen flex-col overflow-x-hidden bg-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

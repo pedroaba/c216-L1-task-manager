@@ -36,7 +36,9 @@ export default async function DashboardLayout({
               <AvatarButton />
             </div>
           </header>
-          <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
+          <main className="flex flex-1 flex-col gap-4 overflow-x-hidden p-4">
+            {children}
+          </main>
         </SidebarInset>
         <SystemUserModal />
       </SidebarProvider>

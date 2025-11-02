@@ -22,7 +22,10 @@ export function AppBreadcrumb() {
   const pathname = usePathname();
   const segments = pathname
     .split("/")
-    .filter((segment) => segment !== "" && segment !== "workspace");
+    .filter(
+      (segment) =>
+        segment !== "" && segment !== "workspace" && segment !== "projects"
+    );
 
   // If we're on the home page, show just "Home"
   if (segments.length === 0) {
@@ -50,7 +53,7 @@ export function AppBreadcrumb() {
 
         {segments.map((segment, index) => {
           const isLast = index === segments.length - 1;
-          const href = `/${segments.slice(0, index + 1).join("/")}`;
+          const href = `/workspace/${segments.slice(0, index + 1).join("/")}`;
           const label = formatSegment(segment);
 
           return (
