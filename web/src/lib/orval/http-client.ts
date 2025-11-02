@@ -30,18 +30,36 @@ export const httpClient = async <TData, TError = unknown, TVariables = unknown>(
 ): Promise<ResponseConfig<TData, TError>> => {
   const cookies = parseCookies();
   const token = cookies[appConfig.authCookieName];
-  if (token) {
-    const headers = new Headers(config.headers);
-    headers.append("Authorization", `Bearer ${token}`);
-    headers.append("session", token);
-    config.headers = headers;
+
+  // 1) monta a URL
+  let url = config.url ?? "";
+
+  if (config.params && Object.keys(config.params).length > 0) {
+    const search = new URLSearchParams();
+    Object.entries(config.params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        search.append(key, String(value));
+      }
+    });
+
+    const qs = search.toString();
+    if (qs) {
+      url = `${url}${url.includes("?") ? "&" : "?"}${qs}`;
+    }
   }
 
-  const response = await fetch(`${config.url}`, {
-    method: config.method.toUpperCase(),
+  // 2) headers com token
+  const headers = new Headers(config.headers);
+  if (token) {
+    headers.append("Authorization", `Bearer ${token}`);
+    headers.append("session", token);
+  }
+
+  const response = await fetch(url, {
+    method: config.method,
     body: config.data ? JSON.stringify(config.data) : undefined,
     signal: config.signal,
-    headers: config.headers,
+    headers,
   });
 
   let data = null;

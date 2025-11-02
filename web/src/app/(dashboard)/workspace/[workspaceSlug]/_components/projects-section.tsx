@@ -15,7 +15,9 @@ import {
 
 export function ProjectsSection() {
   const { workspaceSlug } = useParams();
-  const { data, isLoading } = useGetProject();
+  const { data, isLoading } = useGetProject({
+    workspaceId: String(workspaceSlug),
+  });
 
   const [_, projects] = data ?? [];
 

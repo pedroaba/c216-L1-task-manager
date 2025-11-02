@@ -1,12 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createWorkspace } from "@/http/create-workspace";
+import { getGetWorkspaceQueryKey } from "@/http/gen/endpoints/workspace/workspace.gen";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -66,7 +67,7 @@ export function CreateWorkspaceModal({
     },
   });
 
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   async function handleCreateWorkspace(data: Schema) {
     const toastId = toast.loading("Creating workspace...");
@@ -85,13 +86,16 @@ export function CreateWorkspaceModal({
       description: "",
     });
 
+    await queryClient.invalidateQueries({
+      queryKey: getGetWorkspaceQueryKey(),
+    });
+
     toast.success(response.message, {
       description: "You will be redirected to the workspace page",
       id: toastId,
     });
-    router.push(
-      `/workspace/${(response.other as { workspaceId: string }).workspaceId}`
-    );
+
+    onOpenChange?.(false);
   }
 
   return (

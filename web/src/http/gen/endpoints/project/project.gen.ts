@@ -46,8 +46,8 @@ export const postProject = (
     postProjectBody: PostProjectBody,
  signal?: AbortSignal
 ) => {
-      
-      
+
+
       return httpClient<PostProject201>(
       {url: `http://localhost:3333/project/`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
@@ -55,7 +55,7 @@ export const postProject = (
     },
       );
     }
-  
+
 
 
 export const getPostProjectMutationOptions = <TError = unknown,
@@ -69,7 +69,7 @@ const {mutation: mutationOptions} = options ?
       : {...options, mutation: {...options.mutation, mutationKey}}
       : {mutation: { mutationKey, }};
 
-      
+
 
 
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof postProject>>, {data: PostProjectBody}> = (props) => {
@@ -78,7 +78,7 @@ const {mutation: mutationOptions} = options ?
           return  postProject(data,)
         }
 
-        
+
 
 
   return  { mutationFn, ...mutationOptions }}
@@ -111,15 +111,15 @@ export const getProject = (
     params?: GetProjectParams,
  signal?: AbortSignal
 ) => {
-      
-      
+
+
       return httpClient<GetProject200>(
       {url: `http://localhost:3333/project/`, method: 'GET',
         params, signal
     },
       );
     }
-  
+
 
 
 
@@ -129,7 +129,7 @@ export const getGetProjectQueryKey = (params?: GetProjectParams,) => {
     ] as const;
     }
 
-    
+
 export const getGetProjectQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = unknown>(params?: GetProjectParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 ) => {
 
@@ -137,13 +137,13 @@ const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectQueryKey(params);
 
-  
+
 
     const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(params, signal);
 
-      
 
-      
+
+
 
    return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
@@ -182,10 +182,11 @@ export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TE
 
 export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = unknown>(
  params?: GetProjectParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
- , queryClient?: QueryClient 
+ , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProjectQueryOptions(params,options)
+  console.log(queryOptions)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -205,14 +206,14 @@ export const getProjectIdOrSlug = (
     idOrSlug: string,
  signal?: AbortSignal
 ) => {
-      
-      
+
+
       return httpClient<GetProjectIdOrSlug200>(
       {url: `http://localhost:3333/project/${idOrSlug}`, method: 'GET', signal
     },
       );
     }
-  
+
 
 
 
@@ -222,7 +223,7 @@ export const getGetProjectIdOrSlugQueryKey = (idOrSlug?: string,) => {
     ] as const;
     }
 
-    
+
 export const getGetProjectIdOrSlugQueryOptions = <TData = Awaited<ReturnType<typeof getProjectIdOrSlug>>, TError = unknown>(idOrSlug: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectIdOrSlug>>, TError, TData>>, }
 ) => {
 
@@ -230,13 +231,13 @@ const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectIdOrSlugQueryKey(idOrSlug);
 
-  
+
 
     const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectIdOrSlug>>> = ({ signal }) => getProjectIdOrSlug(idOrSlug, signal);
 
-      
 
-      
+
+
 
    return  { queryKey, queryFn, enabled: !!(idOrSlug), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProjectIdOrSlug>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
@@ -275,7 +276,7 @@ export function useGetProjectIdOrSlug<TData = Awaited<ReturnType<typeof getProje
 
 export function useGetProjectIdOrSlug<TData = Awaited<ReturnType<typeof getProjectIdOrSlug>>, TError = unknown>(
  idOrSlug: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectIdOrSlug>>, TError, TData>>, }
- , queryClient?: QueryClient 
+ , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProjectIdOrSlugQueryOptions(idOrSlug,options)
@@ -298,8 +299,8 @@ export const putProjectIdOrSlug = (
     idOrSlug: string,
     putProjectIdOrSlugBody: PutProjectIdOrSlugBody,
  ) => {
-      
-      
+
+
       return httpClient<PutProjectIdOrSlug200>(
       {url: `http://localhost:3333/project/${idOrSlug}`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
@@ -307,7 +308,7 @@ export const putProjectIdOrSlug = (
     },
       );
     }
-  
+
 
 
 export const getPutProjectIdOrSlugMutationOptions = <TError = unknown,
@@ -321,7 +322,7 @@ const {mutation: mutationOptions} = options ?
       : {...options, mutation: {...options.mutation, mutationKey}}
       : {mutation: { mutationKey, }};
 
-      
+
 
 
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof putProjectIdOrSlug>>, {idOrSlug: string;data: PutProjectIdOrSlugBody}> = (props) => {
@@ -330,7 +331,7 @@ const {mutation: mutationOptions} = options ?
           return  putProjectIdOrSlug(idOrSlug,data,)
         }
 
-        
+
 
 
   return  { mutationFn, ...mutationOptions }}
@@ -362,14 +363,14 @@ export const usePutProjectIdOrSlug = <TError = unknown,
 export const deleteProjectIdOrSlug = (
     idOrSlug: string,
  ) => {
-      
-      
+
+
       return httpClient<unknown>(
       {url: `http://localhost:3333/project/${idOrSlug}`, method: 'DELETE'
     },
       );
     }
-  
+
 
 
 export const getDeleteProjectIdOrSlugMutationOptions = <TError = unknown,
@@ -383,7 +384,7 @@ const {mutation: mutationOptions} = options ?
       : {...options, mutation: {...options.mutation, mutationKey}}
       : {mutation: { mutationKey, }};
 
-      
+
 
 
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProjectIdOrSlug>>, {idOrSlug: string}> = (props) => {
@@ -392,13 +393,13 @@ const {mutation: mutationOptions} = options ?
           return  deleteProjectIdOrSlug(idOrSlug,)
         }
 
-        
+
 
 
   return  { mutationFn, ...mutationOptions }}
 
     export type DeleteProjectIdOrSlugMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProjectIdOrSlug>>>
-    
+
     export type DeleteProjectIdOrSlugMutationError = unknown
 
     /**
@@ -417,4 +418,3 @@ export const useDeleteProjectIdOrSlug = <TError = unknown,
 
       return useMutation(mutationOptions, queryClient);
     }
-    

@@ -12,7 +12,9 @@ import { destroyCookie } from "nookies";
 import { toast } from "sonner";
 import { appConfig } from "@/constants/app-config";
 import { logout } from "@/http/logout";
+import { useAuthStore } from "@/store/auth";
 import { useSystemUserModal } from "@/store/use-user-modal";
+import { getInitials } from "@/utils/get-initials";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -28,6 +30,7 @@ import {
 export function AvatarButton() {
   const router = useRouter();
   const { openModal } = useSystemUserModal();
+  const user = useAuthStore((state) => state.user);
 
   async function handleLogout() {
     const response = await logout();
@@ -53,7 +56,7 @@ export function AvatarButton() {
         <Avatar className="size-9">
           <AvatarImage alt="User" src="/avatar.png" />
           <AvatarFallback className="bg-primary/10 text-primary text-xs">
-            UU
+            {user ? getInitials(user.name) : "UU"}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

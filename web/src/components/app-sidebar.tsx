@@ -76,7 +76,16 @@ export function AppSidebar() {
 
   const { openModal } = useSystemUserModal();
 
-  const { data, isLoading } = useGetProject();
+  const { data, isLoading } = useGetProject(
+    {
+      workspaceId: String(workspaceSlug),
+    },
+    {
+      query: {
+        enabled: !!workspaceSlug,
+      },
+    }
+  );
 
   const [_, projects] = data ?? [];
 
