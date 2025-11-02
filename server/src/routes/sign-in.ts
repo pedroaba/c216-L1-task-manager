@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 import { Session } from "@/lib/session"
 
 export const signInRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/sign-in",
     {
       schema: {

@@ -5,7 +5,7 @@ import { StatusCode } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export const listWorkspaceRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.get(
+  server.get(
     "/",
     {
       schema: {
@@ -139,16 +139,33 @@ export const listWorkspaceRoute: FastifyPluginAsyncZod = async (server) => {
         },
       })
 
-      const workspaces = workspacesOnDb.map((workspace) => ({
-        id: workspace.id,
-        name: workspace.name,
-        slug: workspace.slug,
-        description: workspace.description ?? undefined,
-        owner: workspace.owner,
-        createdAt: workspace.createdAt,
-        updatedAt: workspace.updatedAt,
-        totalMembers: workspace._count.members,
-      }))
+      const workspaces = workspacesOnDb.map(
+        (workspace: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          owner: {
+            id: string
+            name: string
+            email: string
+          }
+          createdAt: Date
+          updatedAt: Date
+          _count: {
+            members: number
+          }
+        }) => ({
+          id: workspace.id,
+          name: workspace.name,
+          slug: workspace.slug,
+          description: workspace.description ?? undefined,
+          owner: workspace.owner,
+          createdAt: workspace.createdAt,
+          updatedAt: workspace.updatedAt,
+          totalMembers: workspace._count.members,
+        })
+      )
 
       return reply.status(StatusCode.OK).send({
         workspaces,

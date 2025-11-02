@@ -4,7 +4,7 @@ import { StatusCode } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export const deleteProjectRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.delete(
+  server.delete(
     "/:idOrSlug",
     {
       schema: {

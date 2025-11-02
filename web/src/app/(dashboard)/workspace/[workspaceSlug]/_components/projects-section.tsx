@@ -1,8 +1,26 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { Inbox } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useRef } from "react";
+import { Spinner } from "@/components/ui/spinner";
+import { useGetProject } from "@/http/gen/endpoints/project/project.gen";
+import { dayjsApi } from "@/lib/dayjs";
 import { ProjectCard } from "./project-card";
+import { ProjectCreateModal } from "./project-create-modal";
+import {
+  ProjectEditModal,
+  type ProjectEditModalMethod,
+} from "./project-edit-modal";
 
 export function ProjectsSection() {
+  const { workspaceSlug } = useParams();
+  const { data, isLoading } = useGetProject();
+
+  const [_, projects] = data ?? [];
+
+  const projectEditModalRef = useRef<ProjectEditModalMethod | null>(null);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -12,38 +30,52 @@ export function ProjectsSection() {
             Manage your project collections
           </p>
         </div>
-        <Button className="shadow-sm" size="sm">
-          <Plus className="size-4" />
-          New Project
-        </Button>
+        <ProjectCreateModal />
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <ProjectCard
-          color="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700"
-          completedTasks={32}
-          lastUpdate="2h ago"
-          members={4}
-          name="Website Redesign"
-          taskCount={45}
-        />
-        <ProjectCard
-          color="bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700"
-          completedTasks={89}
-          lastUpdate="1d ago"
-          members={7}
-          name="Mobile App"
-          taskCount={120}
-        />
-        <ProjectCard
-          color="bg-gradient-to-br from-green-500 via-green-600 to-green-700"
-          completedTasks={54}
-          lastUpdate="3h ago"
-          members={3}
-          name="Marketing Campaign"
-          taskCount={78}
-        />
+        {isLoading && (
+          <div className="col-span-4 flex h-64 w-full flex-col items-center justify-center">
+            <Spinner className="size-5 text-muted-foreground" />
+            <span className="text-muted-foreground">Loading...</span>
+          </div>
+        )}
+
+        {!isLoading && projects?.total === 0 && (
+          <div className="col-span-4 flex h-64 w-full flex-col items-center justify-center">
+            <Inbox className="size-5 text-muted-foreground" />
+            <span className="text-muted-foreground">No projects found</span>
+          </div>
+        )}
+
+        {!isLoading &&
+          (projects?.total ?? 0) > 0 &&
+          projects?.projects.map((project) => (
+            <ProjectCard
+              color={project.background ?? "gray"}
+              completedTasks={0}
+              icon={project.icon ?? "Folder"}
+              key={project.id}
+              lastUpdate={dayjsApi(project.updatedAt).fromNow()}
+              members={project.totalMembers}
+              name={project.name}
+              onEditProject={() => {
+                projectEditModalRef.current?.open({
+                  description: project.description ?? "",
+                  icon: project.icon ?? "Folder",
+                  id: project.id,
+                  name: project.name,
+                  slug: project.slug,
+                });
+              }}
+              slug={project.slug}
+              taskCount={0}
+              workspaceSlug={String(workspaceSlug)}
+            />
+          ))}
       </div>
+
+      <ProjectEditModal ref={projectEditModalRef} />
     </div>
   );
 }

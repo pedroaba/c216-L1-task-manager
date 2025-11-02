@@ -6,7 +6,7 @@ import { MIN_NAME_LENGTH, MIN_PASSWORD_LENGTH } from "@/constants/validation"
 import { prisma } from "@/lib/prisma"
 
 export const registerUserRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/register",
     {
       schema: {

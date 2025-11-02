@@ -44,7 +44,12 @@ export const httpClient = async <TData, TError = unknown, TVariables = unknown>(
     headers: config.headers,
   });
 
-  const data = await response.json();
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
+  }
 
   if (!response.ok) {
     return [data as TError, null];

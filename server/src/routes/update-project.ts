@@ -191,7 +191,7 @@ async function processProjectUpdate(
 }
 
 export const updateProjectRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.put(
+  server.put(
     "/:idOrSlug",
     {
       schema: {

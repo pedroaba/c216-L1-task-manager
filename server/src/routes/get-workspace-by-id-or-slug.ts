@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 export const getWorkspaceByIdOrSlugRoute: FastifyPluginAsyncZod = async (
   server
 ) => {
-  await server.get(
+  server.get(
     "/:idOrSlug",
     {
       schema: {
@@ -119,11 +119,16 @@ export const getWorkspaceByIdOrSlugRoute: FastifyPluginAsyncZod = async (
           ...workspaceOnDb,
           description: workspaceOnDb.description ?? undefined,
           owner: workspaceOnDb.owner,
-          members: workspaceOnDb.members.map((member) => ({
-            id: member.id,
-            name: member.user.name,
-            email: member.user.email,
-          })),
+          members: workspaceOnDb.members.map(
+            (member: {
+              id: string
+              user: { id: string; name: string; email: string }
+            }) => ({
+              id: member.id,
+              name: member.user.name,
+              email: member.user.email,
+            })
+          ),
         },
       })
     }

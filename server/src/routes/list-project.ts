@@ -5,7 +5,7 @@ import { StatusCode } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export const listProjectRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.get(
+  server.get(
     "/",
     {
       schema: {

@@ -5,14 +5,16 @@ import {
   Container,
   HomeIcon,
   InboxIcon,
+  icons,
   PlusIcon,
   SettingsIcon,
   Trash2,
   UserIcon,
   WandSparkles,
 } from "lucide-react";
+
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { destroyCookie } from "nookies";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,11 +44,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { appConfig } from "@/constants/app-config";
+import { useGetProject } from "@/http/gen/endpoints/project/project.gen";
 import { logout } from "@/http/logout";
 import { useAuthStore } from "@/store/auth";
 import { useSystemUserModal } from "@/store/use-user-modal";
+import { camelCasify } from "@/utils/camel-casify";
 import { AppSidebarHeader } from "./app-sidebar-header";
 
 const mainNavItems = [
@@ -66,7 +72,13 @@ const mainNavItems = [
 export function AppSidebar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { workspaceSlug } = useParams();
+
   const { openModal } = useSystemUserModal();
+
+  const { data, isLoading } = useGetProject();
+
+  const [_, projects] = data ?? [];
 
   async function handleLogout() {
     const response = await logout();
@@ -146,12 +158,39 @@ export function AppSidebar() {
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))} */}
-                      <div className="flex flex-col items-center gap-2 py-6">
-                        <InboxIcon className="size-6 text-muted-foreground" />
-                        <span className="text-muted-foreground">
-                          No projects created
-                        </span>
-                      </div>
+                      {!isLoading && (projects?.total ?? 0) === 0 && (
+                        <div className="flex flex-col items-center gap-2 py-6">
+                          <InboxIcon className="size-6 text-muted-foreground" />
+                          <span className="text-muted-foreground">
+                            No projects created
+                          </span>
+                        </div>
+                      )}
+
+                      {!isLoading &&
+                        (projects?.total ?? 0) > 0 &&
+                        projects?.projects.map((project) => {
+                          const icon = project.icon ? project.icon : "Folder";
+                          const Icon =
+                            icons[
+                              camelCasify(icon, {
+                                keepFirstLetterUpperCase: true,
+                              }) as keyof typeof icons
+                            ];
+
+                          return (
+                            <SidebarMenuSubItem key={project.id}>
+                              <SidebarMenuSubButton asChild>
+                                <Link
+                                  href={`/workspace/${workspaceSlug}/projects/${project.slug}`}
+                                >
+                                  <Icon className="mr-1 size-4" />
+                                  <span>{project.name}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>

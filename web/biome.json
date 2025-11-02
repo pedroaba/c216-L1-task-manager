@@ -27,7 +27,9 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off",
-        "useAwait": "off"
+        "useAwait": "off",
+        "noArrayIndexKey": "off",
+        "noEvolvingTypes": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off"
@@ -35,14 +37,22 @@
       "performance": {
         "noNamespaceImport": "off"
       },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noExportedImports": "off",
+        "noMagicNumbers": "off"
+      },
       "nursery": {
-        "noShadow": "off"
+        "noShadow": "off",
+        "noReactForwardRef": "off"
       },
       "correctness": {
-        "noNestedComponentDefinitions": "off"
+        "noNestedComponentDefinitions": "off",
+        "noUnknownProperty": "off"
       },
       "complexity": {
-        "noExcessiveCognitiveComplexity": "off"
+        "noExcessiveCognitiveComplexity": "off",
+        "noForEach": "off"
       },
       "a11y": {
         "useSemanticElements": "off",
@@ -65,5 +75,7 @@
       }
     }
   },
-  "extends": ["ultracite"]
+  "extends": [
+    "ultracite"
+  ]
 }

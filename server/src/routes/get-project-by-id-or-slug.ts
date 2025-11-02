@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 export const getProjectByIdOrSlugRoute: FastifyPluginAsyncZod = async (
   server
 ) => {
-  await server.get(
+  server.get(
     "/:idOrSlug",
     {
       schema: {

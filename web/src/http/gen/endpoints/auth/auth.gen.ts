@@ -15,6 +15,11 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  PostAuthPasswordForgotBody,
+  PostAuthPasswordReset200,
+  PostAuthPasswordReset400,
+  PostAuthPasswordReset404,
+  PostAuthPasswordResetBody,
   PostAuthSignIn200,
   PostAuthSignInBody
 } from '../../models';
@@ -149,6 +154,136 @@ export const usePostAuthSignOut = <TError = unknown,
       > => {
 
       const mutationOptions = getPostAuthSignOutMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
+ * Sends a password recovery email to the user with a link to reset their password.
+ * @summary Send password recovery email to user
+ */
+export const postAuthPasswordForgot = (
+    postAuthPasswordForgotBody: PostAuthPasswordForgotBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return httpClient<unknown>(
+      {url: `http://localhost:3333/auth/password/forgot`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postAuthPasswordForgotBody, signal
+    },
+      );
+    }
+  
+
+
+export const getPostAuthPasswordForgotMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordForgot>>, TError,{data: PostAuthPasswordForgotBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordForgot>>, TError,{data: PostAuthPasswordForgotBody}, TContext> => {
+
+const mutationKey = ['postAuthPasswordForgot'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAuthPasswordForgot>>, {data: PostAuthPasswordForgotBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postAuthPasswordForgot(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostAuthPasswordForgotMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthPasswordForgot>>>
+    export type PostAuthPasswordForgotMutationBody = PostAuthPasswordForgotBody
+    export type PostAuthPasswordForgotMutationError = unknown
+
+    /**
+ * @summary Send password recovery email to user
+ */
+export const usePostAuthPasswordForgot = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordForgot>>, TError,{data: PostAuthPasswordForgotBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postAuthPasswordForgot>>,
+        TError,
+        {data: PostAuthPasswordForgotBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPostAuthPasswordForgotMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
+ * Resets the user's password using a valid password reset token.
+ * @summary Reset user password with token
+ */
+export const postAuthPasswordReset = (
+    postAuthPasswordResetBody: PostAuthPasswordResetBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return httpClient<PostAuthPasswordReset200>(
+      {url: `http://localhost:3333/auth/password/reset`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postAuthPasswordResetBody, signal
+    },
+      );
+    }
+  
+
+
+export const getPostAuthPasswordResetMutationOptions = <TError = PostAuthPasswordReset400 | PostAuthPasswordReset404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordReset>>, TError,{data: PostAuthPasswordResetBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordReset>>, TError,{data: PostAuthPasswordResetBody}, TContext> => {
+
+const mutationKey = ['postAuthPasswordReset'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAuthPasswordReset>>, {data: PostAuthPasswordResetBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postAuthPasswordReset(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostAuthPasswordResetMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthPasswordReset>>>
+    export type PostAuthPasswordResetMutationBody = PostAuthPasswordResetBody
+    export type PostAuthPasswordResetMutationError = PostAuthPasswordReset400 | PostAuthPasswordReset404
+
+    /**
+ * @summary Reset user password with token
+ */
+export const usePostAuthPasswordReset = <TError = PostAuthPasswordReset400 | PostAuthPasswordReset404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAuthPasswordReset>>, TError,{data: PostAuthPasswordResetBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postAuthPasswordReset>>,
+        TError,
+        {data: PostAuthPasswordResetBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPostAuthPasswordResetMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

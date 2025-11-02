@@ -2,7 +2,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
 
 export const healthRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.get(
+  server.get(
     "/health",
     {
       schema: {

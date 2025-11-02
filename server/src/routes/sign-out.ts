@@ -4,7 +4,7 @@ import { StatusCode } from "@/constants/status-code"
 import { Session } from "@/lib/session"
 
 export const signOutRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/sign-out",
     {
       schema: {

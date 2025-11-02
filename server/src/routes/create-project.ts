@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 import { slugify } from "@/utils/slugify"
 
 export const createProjectRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/",
     {
       schema: {

@@ -13,7 +13,7 @@ import { generatePasswordResetToken } from "@/utils/token"
 export const sendForgotPasswordEmail: FastifyPluginAsyncZod = async (
   server
 ) => {
-  await server.post(
+  server.post(
     "/password/forgot",
     {
       schema: {

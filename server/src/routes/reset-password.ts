@@ -11,7 +11,7 @@ const MAX_PASSWORD_LENGTH = 100
 const TOKEN_EXPIRATION_HOURS = 24
 
 export const resetPassword: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/password/reset",
     {
       schema: {
