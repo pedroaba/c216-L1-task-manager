@@ -19,9 +19,20 @@ type KanbanColumnProps = {
     color: string;
   };
   tasks: Task[];
+  onEditTask?: (task: Task) => void;
+  onDeleteTask?: (taskId: string) => void;
+  onCreateTask?: (status: string) => void;
+  onPreviewTask?: (task: Task) => void;
 };
 
-export function KanbanColumn({ column, tasks }: KanbanColumnProps) {
+export function KanbanColumn({
+  column,
+  tasks,
+  onEditTask,
+  onDeleteTask,
+  onCreateTask,
+  onPreviewTask,
+}: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
     data: {
@@ -49,7 +60,12 @@ export function KanbanColumn({ column, tasks }: KanbanColumnProps) {
             {tasks.length}
           </Badge>
         </div>
-        <Button className="size-8" size="icon" variant="ghost">
+        <Button
+          className="size-8"
+          onClick={() => onCreateTask?.(column.id)}
+          size="icon"
+          variant="ghost"
+        >
           <Plus className="size-4" />
         </Button>
       </div>
@@ -69,13 +85,23 @@ export function KanbanColumn({ column, tasks }: KanbanColumnProps) {
         >
           <div className={cn("space-y-3")}>
             {tasks.map((task) => (
-              <TaskCard columnId={column.id} key={task.id} task={task} />
+              <TaskCard
+                columnId={column.id}
+                key={task.id}
+                task={task}
+                onEdit={onEditTask}
+                onDelete={onDeleteTask}
+                onPreview={onPreviewTask}
+              />
             ))}
           </div>
         </SortableContext>
 
         {tasks.length === 0 && (
-          <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed py-16 text-center">
+          <div
+            className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed py-16 text-center transition-colors hover:bg-muted/50"
+            onClick={() => onCreateTask?.(column.id)}
+          >
             <div className="mb-3 rounded-full bg-muted p-3">
               <CirclePlus className="size-6 text-muted-foreground" />
             </div>

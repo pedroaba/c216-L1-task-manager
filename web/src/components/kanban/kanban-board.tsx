@@ -11,7 +11,10 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { updateTask } from "@/http/update-task";
 import { KanbanColumn } from "./kanban-column";
 import type { Task } from "./task-card";
 import { TaskCard } from "./task-card";
@@ -23,11 +26,28 @@ type KanbanBoardProps = {
     title: string;
     color: string;
   }>;
+  onEditTask?: (task: Task) => void;
+  onDeleteTask?: (taskId: string) => void;
+  onCreateTask?: (status: string) => void;
+  onPreviewTask?: (task: Task) => void;
 };
 
-export function KanbanBoard({ initialTasks, columns }: KanbanBoardProps) {
+export function KanbanBoard({
+  initialTasks,
+  columns,
+  onEditTask,
+  onDeleteTask,
+  onCreateTask,
+  onPreviewTask,
+}: KanbanBoardProps) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const queryClient = useQueryClient();
+
+  // Sync tasks state with initialTasks prop changes (from query updates)
+  useEffect(() => {
+    setTasks(initialTasks);
+  }, [initialTasks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -111,7 +131,7 @@ export function KanbanBoard({ initialTasks, columns }: KanbanBoardProps) {
     }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     setActiveTask(null);
 
     const { active, over } = event;
@@ -138,11 +158,34 @@ export function KanbanBoard({ initialTasks, columns }: KanbanBoardProps) {
     if (overData?.type === "column") {
       const newColumnId = overData.columnId;
 
+      // Optimistic update
       setTasks((tasks) =>
         tasks.map((task) =>
           task.id === activeId ? { ...task, status: newColumnId } : task
         )
       );
+
+      // Update on server
+      const response = await updateTask({
+        id: String(activeId),
+        status: newColumnId as "todo" | "in-progress" | "in-review" | "done",
+      });
+
+      if (!response.success) {
+        // Revert optimistic update
+        setTasks((tasks) =>
+          tasks.map((task) =>
+            task.id === activeId ? { ...task, status: activeTask.status } : task
+          )
+        );
+        toast.error(response.message || "Failed to update task status");
+        return;
+      }
+
+      // Invalidate queries to refetch
+      await queryClient.invalidateQueries({
+        queryKey: ["tasks"],
+      });
     }
   };
 
@@ -163,6 +206,10 @@ export function KanbanBoard({ initialTasks, columns }: KanbanBoardProps) {
             column={column}
             key={column.id}
             tasks={getTasksByColumn(column.id)}
+            onEditTask={onEditTask}
+            onDeleteTask={onDeleteTask}
+            onCreateTask={onCreateTask}
+            onPreviewTask={onPreviewTask}
           />
         ))}
       </div>

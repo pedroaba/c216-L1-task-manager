@@ -2,6 +2,7 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useRef } from "react";
 import {
   AlertCircle,
   Calendar,
@@ -9,11 +10,19 @@ import {
   MessageSquare,
   MoreHorizontal,
   Paperclip,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 
@@ -37,6 +46,9 @@ export type Task = {
 type TaskCardProps = {
   task: Task;
   columnId: string;
+  onEdit?: (task: Task) => void;
+  onDelete?: (taskId: string) => void;
+  onPreview?: (task: Task) => void;
 };
 
 const priorityColors = {
@@ -51,7 +63,13 @@ const priorityIcons = {
   high: AlertCircle,
 };
 
-export function TaskCard({ task, columnId }: TaskCardProps) {
+export function TaskCard({
+  task,
+  columnId,
+  onEdit,
+  onDelete,
+  onPreview,
+}: TaskCardProps) {
   const {
     attributes,
     listeners,
@@ -74,7 +92,11 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
   };
 
   const PriorityIcon = priorityIcons[task.priority];
-  const isOverdue = new Date(task.dueDate) < new Date() && columnId !== "done";
+  const hasDueDate = task.dueDate && task.dueDate.trim() !== "";
+  const isOverdue =
+    hasDueDate && new Date(task.dueDate) < new Date() && columnId !== "done";
+
+  const dragStartPosition = useRef<{ x: number; y: number } | null>(null);
 
   return (
     <div
@@ -84,6 +106,35 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
     >
       <Card
         className="cursor-pointer p-0 transition-shadow hover:shadow-md"
+        onMouseDown={(e) => {
+          // Store initial mouse position for drag detection
+          dragStartPosition.current = { x: e.clientX, y: e.clientY };
+        }}
+        onClick={(e) => {
+          // Don't open preview if clicking on dropdown menu or buttons
+          if (
+            (e.target as HTMLElement).closest('[role="menuitem"]') ||
+            (e.target as HTMLElement).closest('button[aria-haspopup="menu"]') ||
+            (e.target as HTMLElement).closest("button")
+          ) {
+            return;
+          }
+
+          // Don't open preview if this was a drag (mouse moved more than 5px)
+          if (dragStartPosition.current) {
+            const distance = Math.sqrt(
+              Math.pow(e.clientX - dragStartPosition.current.x, 2) +
+                Math.pow(e.clientY - dragStartPosition.current.y, 2)
+            );
+            if (distance > 5) {
+              dragStartPosition.current = null;
+              return;
+            }
+          }
+
+          dragStartPosition.current = null;
+          onPreview?.(task);
+        }}
         {...attributes}
         {...listeners}
       >
@@ -93,9 +144,45 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
               {task.title}
             </h4>
 
-            <Button className="-mt-1 -mr-1 h-6 w-6" size="icon" variant="ghost">
-              <MoreHorizontal className="size-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="-mt-1 -mr-1 h-6 w-6"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  size="icon"
+                  variant="ghost"
+                >
+                  <MoreHorizontal className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {onEdit && (
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(task);
+                    }}
+                  >
+                    <Pencil className="size-4" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {onDelete && (
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(task.id);
+                    }}
+                    variant="destructive"
+                  >
+                    <Trash2 className="size-4" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <p className="line-clamp-2 text-muted-foreground text-xs">
             {task.description}
@@ -145,20 +232,22 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
                   <span>{task.attachments}</span>
                 </div>
               )}
-              <div
-                className={cn(
-                  "flex items-center gap-1",
-                  isOverdue && "text-red-500"
-                )}
-              >
-                <Calendar className="size-3.5" />
-                <span>
-                  {new Date(task.dueDate).toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "short",
-                  })}
-                </span>
-              </div>
+              {hasDueDate && (
+                <div
+                  className={cn(
+                    "flex items-center gap-1",
+                    isOverdue && "text-red-500"
+                  )}
+                >
+                  <Calendar className="size-3.5" />
+                  <span>
+                    {new Date(task.dueDate).toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "short",
+                    })}
+                  </span>
+                </div>
+              )}
             </div>
 
             <Avatar className="size-7">

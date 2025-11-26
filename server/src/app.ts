@@ -28,6 +28,11 @@ import { signInRoute } from "./routes/sign-in"
 import { signOutRoute } from "./routes/sign-out"
 import { updateProfileRoute } from "./routes/update-profile"
 import { updateProjectRoute } from "./routes/update-project"
+import { createTaskRoute } from "./routes/create-task"
+import { deleteTaskRoute } from "./routes/delete-task"
+import { getTaskByIdRoute } from "./routes/get-task-by-id"
+import { listTaskRoute } from "./routes/list-task"
+import { updateTaskRoute } from "./routes/update-task"
 
 export const app = fastify({
   logger: {
@@ -162,4 +167,26 @@ app.register(deleteProjectRoute, {
 
 app.register(listProjectRoute, {
   prefix: "/project",
+})
+
+// tasks
+// Register specific routes (/:id) before generic routes (/) to avoid conflicts
+app.register(getTaskByIdRoute, {
+  prefix: "/task",
+})
+
+app.register(updateTaskRoute, {
+  prefix: "/task",
+})
+
+app.register(deleteTaskRoute, {
+  prefix: "/task",
+})
+
+app.register(createTaskRoute, {
+  prefix: "/task",
+})
+
+app.register(listTaskRoute, {
+  prefix: "/task",
 })
