@@ -43,8 +43,8 @@ import { MAX_DESCRIPTION_LENGTH, MAX_NAME_LENGTH } from "@/constants/validations
 const schema = z.object({
   title: z.string().min(5).max(MAX_NAME_LENGTH),
   description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
-  priority: z.enum(["low", "medium", "high"]).default("medium"),
-  status: z.enum(["todo", "in-progress", "in-review", "done"]).default("todo"),
+  priority: z.enum(["low", "medium", "high"]),
+  status: z.enum(["todo", "in-progress", "in-review", "done"]),
   dueDate: z.string().optional(),
   labels: z.string().optional(),
 });

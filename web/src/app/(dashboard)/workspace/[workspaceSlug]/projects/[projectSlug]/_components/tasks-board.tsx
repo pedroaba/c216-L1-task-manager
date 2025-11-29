@@ -6,7 +6,19 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { KanbanBoard } from "@/components/kanban/kanban-board";
 import type { Task } from "@/components/kanban/task-card";
-import { listTasks } from "@/http/list-task";
+import { listTasks, type TaskResponse } from "@/http/list-task";
+
+// Type guard for ListTaskResponse
+function isListTaskResponse(
+  other: unknown
+): other is { tasks: TaskResponse[]; total: number; page: number; limit: number; hasNextPage: boolean } {
+  return (
+    typeof other === "object" &&
+    other !== null &&
+    "tasks" in other &&
+    Array.isArray((other as { tasks: unknown }).tasks)
+  );
+}
 import { deleteTask } from "@/http/delete-task";
 import { convertTaskResponseToTask } from "@/utils/task-utils";
 import { Spinner } from "@/components/ui/spinner";
@@ -63,7 +75,7 @@ export function TasksBoard() {
         projectId,
       });
 
-      if (!response.success || !response.other) {
+      if (!response.success || !isListTaskResponse(response.other)) {
         toast.error(response.message || "Failed to load tasks");
         return [];
       }
@@ -83,6 +95,16 @@ export function TasksBoard() {
 
   // Check for errors - projectErrorData is null on success, error object on failure
   if (projectError || (projectErrorData && projectErrorData !== null)) {
+    const errorMessage =
+      (projectErrorData &&
+        typeof projectErrorData === "object" &&
+        "message" in projectErrorData &&
+        typeof projectErrorData.message === "string"
+        ? projectErrorData.message
+        : null) ||
+      (projectError instanceof Error ? projectError.message : null) ||
+      "Project not found";
+    
     return (
       <div className="flex h-full items-center justify-center">
         <div className="text-center">
@@ -90,7 +112,7 @@ export function TasksBoard() {
             Error loading project
           </p>
           <p className="text-muted-foreground mt-2 text-sm">
-            {projectErrorData?.message || projectError?.message || "Project not found"}
+            {errorMessage}
           </p>
         </div>
       </div>

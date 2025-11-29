@@ -37,8 +37,22 @@ import {
 import { deleteTask } from "@/http/delete-task";
 import { updateTask } from "@/http/update-task";
 import type { Task } from "@/components/kanban/task-card";
+import type { TaskResponse } from "@/http/list-task";
 import { convertTaskResponseToTask } from "@/utils/task-utils";
 import { cn } from "@/lib/utils";
+
+// Type guard for UpdateTaskResponse
+function isUpdateTaskResponse(
+  other: unknown
+): other is { task: TaskResponse } {
+  return (
+    typeof other === "object" &&
+    other !== null &&
+    "task" in other &&
+    typeof (other as { task: unknown }).task === "object" &&
+    (other as { task: unknown }).task !== null
+  );
+}
 
 const priorityColors = {
   low: "bg-gray-100 text-gray-800 border-gray-300",
@@ -221,7 +235,7 @@ export const TaskPreviewModal = React.forwardRef<
     });
 
     // If server response has task data, use it to update cache (more reliable)
-    if (response.other?.task) {
+    if (isUpdateTaskResponse(response.other)) {
       const serverTask = convertTaskResponseToTask(response.other.task);
       setTask(serverTask);
       // Update cache with server response - this will trigger re-render
@@ -279,7 +293,7 @@ export const TaskPreviewModal = React.forwardRef<
     });
 
     // Update cache with server response if available
-    if (response.other?.task) {
+    if (isUpdateTaskResponse(response.other)) {
       const serverTask = convertTaskResponseToTask(response.other.task);
       setTask(serverTask);
       queryClient.setQueryData<Task[]>(["tasks"], (oldData) => {
@@ -320,7 +334,7 @@ export const TaskPreviewModal = React.forwardRef<
     });
 
     // Update cache with server response if available
-    if (response.other?.task) {
+    if (isUpdateTaskResponse(response.other)) {
       const serverTask = convertTaskResponseToTask(response.other.task);
       setTask(serverTask);
       queryClient.setQueryData<Task[]>(["tasks"], (oldData) => {
@@ -366,7 +380,7 @@ export const TaskPreviewModal = React.forwardRef<
       });
 
       // Update cache with server response if available
-      if (response.other?.task) {
+      if (isUpdateTaskResponse(response.other)) {
         const serverTask = convertTaskResponseToTask(response.other.task);
         setTask(serverTask);
         queryClient.setQueryData<Task[]>(["tasks"], (oldData) => {
@@ -418,7 +432,7 @@ export const TaskPreviewModal = React.forwardRef<
     });
 
     // Update cache with server response if available
-    if (response.other?.task) {
+    if (isUpdateTaskResponse(response.other)) {
       const serverTask = convertTaskResponseToTask(response.other.task);
       setTask(serverTask);
       queryClient.setQueryData<Task[]>(["tasks"], (oldData) => {

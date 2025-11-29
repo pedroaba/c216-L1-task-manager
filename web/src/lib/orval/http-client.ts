@@ -1,5 +1,6 @@
 import { parseCookies } from "nookies";
 import { appConfig } from "@/constants/app-config";
+import { env } from "@/env";
 
 export type RequestConfig<TData = unknown> = {
   baseURL?: string;
@@ -31,8 +32,25 @@ export const httpClient = async <TData, TError = unknown, TVariables = unknown>(
   const cookies = parseCookies();
   const token = cookies[appConfig.authCookieName];
 
-  // 1) monta a URL
+  // 1) monta a URL usando baseURL da variável de ambiente ou do config
+  const baseURL = config.baseURL || env.NEXT_PUBLIC_API_URL;
   let url = config.url ?? "";
+
+  // Se a URL já é completa (começa com http), substitui o host pela baseURL
+  // Caso contrário, concatena com baseURL
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    // Extrai o path da URL hardcoded e usa com baseURL
+    try {
+      const urlObj = new URL(url);
+      url = `${baseURL}${urlObj.pathname}${urlObj.search}`;
+    } catch {
+      // Se falhar ao parsear, tenta substituir manualmente
+      url = url.replace(/^https?:\/\/[^/]+/, baseURL);
+    }
+  } else {
+    // Se não começa com http, concatena com baseURL
+    url = `${baseURL}${url.startsWith("/") ? "" : "/"}${url}`;
+  }
 
   if (config.params && Object.keys(config.params).length > 0) {
     const search = new URLSearchParams();

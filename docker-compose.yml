@@ -22,7 +22,7 @@ services:
 
   server:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
     container_name: task-manager-server
     ports:
@@ -43,14 +43,17 @@ services:
 
   web:
     build:
-      context: ../web
+      context: ./web
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3000
+        API_URL: http://server:3000
     container_name: task-manager-web
     ports:
       - "3001:3000"
     environment:
       API_URL: http://server:3000
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NEXT_PUBLIC_API_URL: http://localhost:3000
     depends_on:
       - server
     networks:
@@ -63,3 +66,4 @@ volumes:
 networks:
   task-manager-network:
     driver: bridge
+
